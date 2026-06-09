@@ -23,7 +23,7 @@ function App() {
     activeGroup, history,
     startNewGroup, resumeGroup,
     addItem, removeItem,
-    closeGroup,
+    closeGroup, deleteHistoryItem,
   } = useOrders(selectedStore?.id ?? null, selectedStore?.name ?? null);
 
   const handleSelectStore = (store: StoreInfo) => {
