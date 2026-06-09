@@ -24,6 +24,7 @@ export function useMenu(storeId: string | null, menuFile: string | null) {
 
   useEffect(() => {
     if (!storeId || !menuFile) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setMenu(null);
       return;
     }

@@ -16,6 +16,7 @@ export function useOrders(storeId: string | null, storeName: string | null) {
   useEffect(() => {
     const saved = getActiveGroup();
     if (saved && saved.storeId === storeId) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setActiveGroup(saved);
     }
     setHistory(getGroupHistory());
