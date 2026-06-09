@@ -1,0 +1,16 @@
+{
+  "stores": [
+    {
+      "id": "black-tea-group",
+      "name": "紅茶幫",
+      "description": "波霸、仙草凍免費加！特大杯 XL 超級滿足，全面買五送一",
+      "menuFile": "black-tea-group.json"
+    },
+    {
+      "id": "oldmon",
+      "name": "古曼",
+      "description": "採用特級蔗糖與當季水果，推薦純粹原味茶與濃煮鮮奶系列",
+      "menuFile": "oldmon.json"
+    }
+  ]
+}
