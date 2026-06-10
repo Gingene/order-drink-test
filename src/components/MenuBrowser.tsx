@@ -28,13 +28,14 @@ interface Props {
     note?: string;
   }) => void;
   onRemoveItem: (id: string) => void;
+  onRemovePersonItems: (personName: string) => void;
   onBack: () => void;
   onCloseGroup: () => void;
   onStartGroup: () => void;
 }
 
 export default function MenuBrowser({
-  menu, activeGroup, onAddItem, onRemoveItem, onBack, onCloseGroup, onStartGroup,
+  menu, activeGroup, onAddItem, onRemoveItem, onRemovePersonItems, onBack, onCloseGroup, onStartGroup,
 }: Props) {
   const { query, setQuery, activeCategory, setActiveCategory, results, categories, clearSearch } = useSearch(menu);
   const [selectedItem, setSelectedItem] = useState<SearchableItem | null>(null);
@@ -150,7 +151,7 @@ export default function MenuBrowser({
                            text-white font-semibold rounded-xl shadow-lg shadow-milk-500/30
                            hover:shadow-xl transition-all active:scale-[0.98] animate-scale-in"
               >
-                ${activeGroup?.totalAmount ?? 0} 結帳 →
+                ${activeGroup?.totalAmount ?? 0} 結單 →
               </button>
             )}
           </div>
@@ -170,7 +171,7 @@ export default function MenuBrowser({
               <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100">📋 目前訂單</h3>
               <button onClick={() => setShowOrders(false)} className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">✕</button>
             </div>
-            <OrderList items={activeGroup?.items ?? []} onRemove={onRemoveItem} />
+            <OrderList items={activeGroup?.items ?? []} onRemove={onRemoveItem} onRemovePersonItems={onRemovePersonItems} />
             {activeGroup && activeGroup.items.length > 0 && (
               <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800 flex justify-between items-center">
                 <span className="text-gray-500 dark:text-gray-400">共 {activeGroup.totalCups} 杯</span>

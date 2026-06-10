@@ -110,7 +110,7 @@ export default function OrderSummary({ storeName, items, totalAmount, totalCups,
               className="w-full py-3 rounded-xl text-sm font-medium text-gray-500 dark:text-gray-400
                          bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
             >
-              🔒 結團並存入歷史紀錄
+              🔒 結單並存入歷史紀錄
             </button>
           ) : (
             <div className="flex gap-2 animate-scale-in">
@@ -126,7 +126,7 @@ export default function OrderSummary({ storeName, items, totalAmount, totalCups,
                 className="flex-1 py-3 rounded-xl text-sm font-medium bg-red-500 text-white 
                            hover:bg-red-600 shadow-md shadow-red-500/30 transition-colors"
               >
-                確定結團
+                確定結單
               </button>
             </div>
           )}
