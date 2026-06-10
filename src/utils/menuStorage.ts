@@ -56,7 +56,8 @@ export async function fetchStoreIndex(): Promise<StoreIndex> {
   const stored = getStoredStoreIndex();
   if (stored) return stored;
 
-  const res = await fetch('/menus/index.json');
+  const baseUrl = import.meta.env.BASE_URL;
+  const res = await fetch(`${baseUrl}menus/index.json`);
   if (!res.ok) throw new Error('Failed to load store index');
   return res.json();
 }
@@ -68,7 +69,8 @@ export async function fetchMenu(storeId: string, menuFile: string): Promise<Stor
   const stored = getStoredMenu(storeId);
   if (stored) return stored;
 
-  const res = await fetch(`/menus/${menuFile}`);
+  const baseUrl = import.meta.env.BASE_URL;
+  const res = await fetch(`${baseUrl}menus/${menuFile}`);
   if (!res.ok) throw new Error(`Failed to load menu: ${menuFile}`);
   return res.json();
 }

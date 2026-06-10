@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import type { StoreMenu, MenuCategory, MenuItem as MenuItemType, Topping } from '../types';
+import type { StoreMenu, MenuItem as MenuItemType } from '../types';
 import { fetchStoreIndex, fetchMenu, saveMenu, exportMenuJSON, importMenuJSON } from '../utils/menuStorage';
 
 interface Props {
