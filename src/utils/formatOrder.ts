@@ -23,7 +23,8 @@ export function formatByPerson(storeName: string, items: OrderItem[]): string {
       const noteStr = order.note ? ` (${order.note})` : '';
       text += `  ${numToCircle(idx + 1)} ${order.itemName}(${order.size}) ${order.sweet}${order.ice}${toppingsStr} ×${order.quantity}  $${order.subtotal}${noteStr}\n`;
     });
-    text += `\n`;
+    const personTotal = orders.reduce((sum, o) => sum + o.subtotal, 0);
+    text += `  📎 小計 $${personTotal}\n\n`;
   });
 
   const totalCups = items.reduce((sum, i) => sum + i.quantity, 0);
@@ -40,7 +41,7 @@ export function formatByPerson(storeName: string, items: OrderItem[]): string {
  */
 export function formatBySummary(storeName: string, items: OrderItem[]): string {
   // Group by item name + size + sweet + ice + toppings combination
-  const grouped = new Map<string, { item: OrderItem; persons: string[]; totalQty: number }>();
+  const grouped = new Map<string, { item: OrderItem; totalQty: number }>();
 
   items.forEach(item => {
     const toppingsKey = item.toppings.map(t => t.name).sort().join(',');
@@ -49,13 +50,9 @@ export function formatBySummary(storeName: string, items: OrderItem[]): string {
     const existing = grouped.get(key);
     if (existing) {
       existing.totalQty += item.quantity;
-      if (!existing.persons.includes(item.personName)) {
-        existing.persons.push(item.personName);
-      }
     } else {
       grouped.set(key, {
         item,
-        persons: [item.personName],
         totalQty: item.quantity,
       });
     }
@@ -64,18 +61,20 @@ export function formatBySummary(storeName: string, items: OrderItem[]): string {
   let text = `📋 ${storeName} 團購訂單（品項彙總）\n`;
   text += `━━━━━━━━━━━━━━\n`;
 
-  grouped.forEach(({ item, persons, totalQty }) => {
+  let idx = 0;
+  grouped.forEach(({ item, totalQty }) => {
+    idx++;
     const toppingsStr = item.toppings.length > 0
       ? ` +${item.toppings.map(t => t.name).join('+')}`
       : '';
-    text += `🧋 ${item.itemName}(${item.size}) ×${totalQty}\n`;
-    text += `   └ ${item.sweet}${item.ice}${toppingsStr}（${persons.join('、')}）\n`;
+    text += `${idx}. ${item.itemName}(${item.size}) ×${totalQty}\n`;
+    text += `   ${item.sweet}/${item.ice}${toppingsStr}\n`;
   });
 
   const totalCups = items.reduce((sum, i) => sum + i.quantity, 0);
   const totalAmount = items.reduce((sum, i) => sum + i.subtotal, 0);
 
-  text += `\n━━━━━━━━━━━━━━\n`;
+  text += `━━━━━━━━━━━━━━\n`;
   text += `📊 共 ${totalCups} 杯 ｜ 💰 總計 $${totalAmount}`;
 
   return text;

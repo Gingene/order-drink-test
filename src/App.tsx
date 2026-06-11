@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { StoreInfo, GroupOrder } from './types';
+import type { StoreInfo } from './types';
 import { useStoreIndex, useMenu } from './hooks/useMenu';
 import { useOrders } from './hooks/useOrders';
 import StoreSelector from './components/StoreSelector';
@@ -21,22 +21,26 @@ function App() {
 
   const {
     activeGroup, history,
-    startNewGroup, resumeGroup,
-    addItem, removeItem,
-    closeGroup,
-  } = useOrders(selectedStore?.id ?? null, selectedStore?.name ?? null);
+    startNewGroup, clearActiveGroup,
+    addItem, removeItem, removePersonItems,
+    closeGroup, deleteHistoryItem,
+  } = useOrders();
 
   const handleSelectStore = (store: StoreInfo) => {
+    // If switching to a different store, clear previous active group
+    if (activeGroup && activeGroup.storeId !== store.id) {
+      clearActiveGroup();
+    }
     setSelectedStore(store);
     setPage('menu');
   };
 
-  const handleResumeGroup = (group: GroupOrder) => {
+  const handleResumeActiveGroup = () => {
+    if (!activeGroup) return;
     // Find the store info from stores list
-    const store = stores.find(s => s.id === group.storeId);
+    const store = stores.find(s => s.id === activeGroup.storeId);
     if (store) {
       setSelectedStore(store);
-      resumeGroup(group);
       setPage('menu');
     }
   };
@@ -52,18 +56,33 @@ function App() {
     setSelectedStore(null);
   };
 
-  // Dark mode toggle
+  const handleStartGroup = () => {
+    if (selectedStore) {
+      startNewGroup(selectedStore.id, selectedStore.name);
+    }
+  };
+
+  // Dark mode toggle with localStorage persistence
   const [darkMode, setDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
-      return document.documentElement.classList.contains('dark') ||
-        window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const stored = localStorage.getItem('theme');
+      if (stored) {
+        const isDark = stored === 'dark';
+        document.documentElement.classList.toggle('dark', isDark);
+        return isDark;
+      }
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.classList.toggle('dark', prefersDark);
+      return prefersDark;
     }
     return false;
   });
 
   const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    document.documentElement.classList.toggle('dark');
+    const newDark = !darkMode;
+    setDarkMode(newDark);
+    document.documentElement.classList.toggle('dark', newDark);
+    localStorage.setItem('theme', newDark ? 'dark' : 'light');
   };
 
   return (
@@ -87,7 +106,8 @@ function App() {
           activeGroup={activeGroup}
           history={history}
           onSelectStore={handleSelectStore}
-          onResumeGroup={handleResumeGroup}
+          onResumeActiveGroup={handleResumeActiveGroup}
+          onDeleteHistoryItem={deleteHistoryItem}
           onNavigateAdmin={() => setPage('admin')}
         />
       )}
@@ -98,9 +118,10 @@ function App() {
           activeGroup={activeGroup}
           onAddItem={addItem}
           onRemoveItem={removeItem}
+          onRemovePersonItems={removePersonItems}
           onBack={handleBack}
           onCloseGroup={handleCloseGroup}
-          onStartGroup={startNewGroup}
+          onStartGroup={handleStartGroup}
         />
       )}
 
