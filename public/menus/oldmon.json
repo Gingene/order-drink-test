@@ -1,22 +1,8 @@
 {
   "storeId": "oldmon",
   "storeName": "古曼",
-  "defaultSweetOptions": [
-    "10度糖",
-    "8度糖",
-    "5度糖",
-    "3度糖",
-    "1度糖",
-    "無糖"
-  ],
-  "defaultIceOptions": [
-    "正常冰",
-    "少冰",
-    "微冰",
-    "去冰",
-    "溫飲",
-    "熱飲"
-  ],
+  "defaultSweetOptions": ["10度糖", "8度糖", "5度糖", "3度糖", "1度糖", "無糖"],
+  "defaultIceOptions": ["正常冰", "少冰", "微冰", "去冰", "溫飲", "熱飲"],
   "defaultToppings": [
     { "name": "蜜漬黑丸", "price": 10 },
     { "name": "荔枝Q凍", "price": 10 },
@@ -24,7 +10,8 @@
     { "name": "台式椰果", "price": 10 },
     { "name": "養樂多", "price": 10 },
     { "name": "雙Q", "price": 10 },
-    { "name": "原味寒天", "price": 15 }
+    { "name": "原味寒天", "price": 15 },
+    { "name": "仙草凍", "price": 0 }
   ],
   "categories": [
     {

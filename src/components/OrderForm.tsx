@@ -26,8 +26,9 @@ export default function OrderForm({ item, menu, lastPersonName, onSubmit, onClos
   const iceOptions = item.iceOptions ?? menu.defaultIceOptions;
   const toppings = item.toppings ?? menu.defaultToppings ?? [];
 
-  const [personName, setPersonName] = useState(lastPersonName);
-  const [size, setSize] = useState(sizes[0]?.[0] ?? 'M');
+  const [personName, setPersonName] = useState(lastPersonName || '客戶1');
+  const defaultSize = sizes.find(([s]) => s === 'XL')?.[0] ?? sizes[sizes.length - 1]?.[0] ?? 'M';
+  const [size, setSize] = useState(defaultSize);
   const [sweet, setSweet] = useState(sweetOptions[0] ?? '正常');
   const [ice, setIce] = useState(iceOptions[0] ?? '正常冰');
   const [selectedToppings, setSelectedToppings] = useState<OrderTopping[]>([]);

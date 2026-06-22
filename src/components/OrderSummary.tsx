@@ -7,18 +7,19 @@ interface Props {
   items: OrderItem[];
   totalAmount: number;
   totalCups: number;
+  userName: string;
   onClose: () => void;
   onCloseGroup: () => void;
 }
 
-export default function OrderSummary({ storeName, items, totalAmount, totalCups, onClose, onCloseGroup }: Props) {
+export default function OrderSummary({ storeName, items, totalAmount, totalCups, userName, onClose, onCloseGroup }: Props) {
   const [copied, setCopied] = useState(false);
-  const [format, setFormat] = useState<'person' | 'summary'>('person');
+  const [format, setFormat] = useState<'person' | 'summary'>('summary');
   const [showConfirmClose, setShowConfirmClose] = useState(false);
 
   const text = format === 'person'
     ? formatByPerson(storeName, items)
-    : formatBySummary(storeName, items);
+    : formatBySummary(storeName, items, userName);
 
   const handleCopy = async () => {
     const ok = await copyToClipboard(text);
