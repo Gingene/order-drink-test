@@ -39,7 +39,7 @@ export function formatByPerson(storeName: string, items: OrderItem[]): string {
 /**
  * Format: 品項彙總（方便店家備料）
  */
-export function formatBySummary(storeName: string, items: OrderItem[]): string {
+export function formatBySummary(storeName: string, items: OrderItem[], userName?: string): string {
   // Group by item name + size + sweet + ice + toppings combination
   const grouped = new Map<string, { item: OrderItem; totalQty: number }>();
 
@@ -58,7 +58,8 @@ export function formatBySummary(storeName: string, items: OrderItem[]): string {
     }
   });
 
-  let text = `📋 ${storeName} 團購訂單（品項彙總）\n`;
+  const displayName = userName || storeName;
+  let text = `📋 ${displayName}\n`;
   text += `━━━━━━━━━━━━━━\n`;
 
   let idx = 0;
@@ -70,12 +71,6 @@ export function formatBySummary(storeName: string, items: OrderItem[]): string {
     text += `${idx}. ${item.itemName}(${item.size}) ×${totalQty}\n`;
     text += `   ${item.sweet}/${item.ice}${toppingsStr}\n`;
   });
-
-  const totalCups = items.reduce((sum, i) => sum + i.quantity, 0);
-  const totalAmount = items.reduce((sum, i) => sum + i.subtotal, 0);
-
-  text += `━━━━━━━━━━━━━━\n`;
-  text += `📊 共 ${totalCups} 杯 ｜ 💰 總計 $${totalAmount}`;
 
   return text;
 }

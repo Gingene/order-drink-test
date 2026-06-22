@@ -32,10 +32,11 @@ interface Props {
   onBack: () => void;
   onCloseGroup: () => void;
   onStartGroup: () => void;
+  userName: string;
 }
 
 export default function MenuBrowser({
-  menu, activeGroup, onAddItem, onRemoveItem, onRemovePersonItems, onBack, onCloseGroup, onStartGroup,
+  menu, activeGroup, onAddItem, onRemoveItem, onRemovePersonItems, onBack, onCloseGroup, onStartGroup, userName,
 }: Props) {
   const { query, setQuery, activeCategory, setActiveCategory, results, categories, clearSearch } = useSearch(menu);
   const [selectedItem, setSelectedItem] = useState<SearchableItem | null>(null);
@@ -200,6 +201,7 @@ export default function MenuBrowser({
           items={activeGroup.items}
           totalAmount={activeGroup.totalAmount}
           totalCups={activeGroup.totalCups}
+          userName={userName}
           onClose={() => setShowSummary(false)}
           onCloseGroup={() => {
             onCloseGroup();
