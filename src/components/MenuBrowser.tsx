@@ -1,17 +1,35 @@
-import { useState } from 'react';
-import type { StoreMenu, SearchableItem, OrderTopping } from '../types';
-import { useSearch } from '../hooks/useSearch';
-import SearchBar from './SearchBar';
-import CategoryTabs from './CategoryTabs';
-import MenuItem from './MenuItem';
-import OrderForm from './OrderForm';
-import OrderList from './OrderList';
-import OrderSummary from './OrderSummary';
+import { useState } from "react";
+import type {
+  StoreMenu,
+  SearchableItem,
+  OrderTopping,
+  OrderItem,
+} from "../types";
+import { useSearch } from "../hooks/useSearch";
+import SearchBar from "./SearchBar";
+import CategoryTabs from "./CategoryTabs";
+import MenuItem from "./MenuItem";
+import OrderForm from "./OrderForm";
+import OrderList from "./OrderList";
+import OrderSummary from "./OrderSummary";
 
 interface Props {
   menu: StoreMenu;
   activeGroup: {
-    items: { id: string; personName: string; menuItemId: string; itemName: string; size: string; price: number; sweet: string; ice: string; toppings: OrderTopping[]; quantity: number; note?: string; subtotal: number }[];
+    items: {
+      id: string;
+      personName: string;
+      menuItemId: string;
+      itemName: string;
+      size: string;
+      price: number;
+      sweet: string;
+      ice: string;
+      toppings: OrderTopping[];
+      quantity: number;
+      note?: string;
+      subtotal: number;
+    }[];
     totalAmount: number;
     totalCups: number;
   } | null;
@@ -27,6 +45,21 @@ interface Props {
     quantity: number;
     note?: string;
   }) => void;
+  onUpdateItem: (
+    itemId: string,
+    item: {
+      personName: string;
+      menuItemId: string;
+      itemName: string;
+      size: string;
+      price: number;
+      sweet: string;
+      ice: string;
+      toppings: OrderTopping[];
+      quantity: number;
+      note?: string;
+    },
+  ) => void;
   onRemoveItem: (id: string) => void;
   onRemovePersonItems: (personName: string) => void;
   onBack: () => void;
@@ -36,13 +69,31 @@ interface Props {
 }
 
 export default function MenuBrowser({
-  menu, activeGroup, onAddItem, onRemoveItem, onRemovePersonItems, onBack, onCloseGroup, onStartGroup, userName,
+  menu,
+  activeGroup,
+  onAddItem,
+  onUpdateItem,
+  onRemoveItem,
+  onRemovePersonItems,
+  onBack,
+  onCloseGroup,
+  onStartGroup,
+  userName,
 }: Props) {
-  const { query, setQuery, activeCategory, setActiveCategory, results, categories, clearSearch } = useSearch(menu);
+  const {
+    query,
+    setQuery,
+    activeCategory,
+    setActiveCategory,
+    results,
+    categories,
+    clearSearch,
+  } = useSearch(menu);
   const [selectedItem, setSelectedItem] = useState<SearchableItem | null>(null);
+  const [editingOrder, setEditingOrder] = useState<OrderItem | null>(null);
   const [showSummary, setShowSummary] = useState(false);
   const [showOrders, setShowOrders] = useState(false);
-  const [lastPersonName, setLastPersonName] = useState('');
+  const [lastPersonName, setLastPersonName] = useState("");
 
   const handleAddOrder = (order: {
     personName: string;
@@ -65,6 +116,51 @@ export default function MenuBrowser({
     setSelectedItem(null);
   };
 
+  const handleSubmitOrder = (order: {
+    personName: string;
+    menuItemId: string;
+    itemName: string;
+    size: string;
+    price: number;
+    sweet: string;
+    ice: string;
+    toppings: OrderTopping[];
+    quantity: number;
+    note?: string;
+  }) => {
+    if (editingOrder) {
+      onUpdateItem(editingOrder.id, order);
+      setEditingOrder(null);
+      setSelectedItem(null);
+      return;
+    }
+
+    handleAddOrder(order);
+  };
+
+  const handleCloseForm = () => {
+    setEditingOrder(null);
+    setSelectedItem(null);
+  };
+
+  const handleEditOrder = (order: OrderItem) => {
+    const matchedItem = menu.categories
+      .flatMap((category) =>
+        category.items.map((item) => ({
+          ...item,
+          categoryName: category.name,
+        })),
+      )
+      .find((item) => item.id === order.menuItemId);
+
+    if (!matchedItem) {
+      return;
+    }
+
+    setEditingOrder(order);
+    setSelectedItem(matchedItem);
+  };
+
   const orderCount = activeGroup?.totalCups ?? 0;
 
   return (
@@ -80,7 +176,9 @@ export default function MenuBrowser({
             >
               ←
             </button>
-            <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100 truncate">{menu.storeName}</h2>
+            <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100 truncate">
+              {menu.storeName}
+            </h2>
           </div>
 
           <SearchBar
@@ -114,7 +212,10 @@ export default function MenuBrowser({
               <div
                 key={item.id}
                 className="animate-slide-up"
-                style={{ animationDelay: `${Math.min(idx * 30, 300)}ms`, animationFillMode: 'both' }}
+                style={{
+                  animationDelay: `${Math.min(idx * 30, 300)}ms`,
+                  animationFillMode: "both",
+                }}
               >
                 <MenuItem item={item} onSelect={setSelectedItem} />
               </div>
@@ -136,8 +237,10 @@ export default function MenuBrowser({
             >
               📋 訂單 ({orderCount} 杯)
               {orderCount > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-500 text-white text-xs rounded-full 
-                                 flex items-center justify-center animate-bounce-in">
+                <span
+                  className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-red-500 text-white text-xs rounded-full 
+                                 flex items-center justify-center animate-bounce-in"
+                >
                   {orderCount}
                 </span>
               )}
@@ -161,22 +264,41 @@ export default function MenuBrowser({
 
       {/* Order List Panel */}
       {showOrders && (
-        <div className="fixed inset-0 z-40 flex items-end sm:items-center justify-center" onClick={() => setShowOrders(false)}>
+        <div
+          className="fixed inset-0 z-40 flex items-end sm:items-center justify-center"
+          onClick={() => setShowOrders(false)}
+        >
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-fade-in" />
           <div
             className="relative w-full max-w-lg max-h-[70dvh] overflow-y-auto bg-white dark:bg-gray-900 
                        rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl animate-slide-up"
-            onClick={e => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100">📋 目前訂單</h3>
-              <button onClick={() => setShowOrders(false)} className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">✕</button>
+              <h3 className="text-lg font-bold text-gray-800 dark:text-gray-100">
+                📋 目前訂單
+              </h3>
+              <button
+                onClick={() => setShowOrders(false)}
+                className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              >
+                ✕
+              </button>
             </div>
-            <OrderList items={activeGroup?.items ?? []} onRemove={onRemoveItem} onRemovePersonItems={onRemovePersonItems} />
+            <OrderList
+              items={activeGroup?.items ?? []}
+              onEdit={handleEditOrder}
+              onRemove={onRemoveItem}
+              onRemovePersonItems={onRemovePersonItems}
+            />
             {activeGroup && activeGroup.items.length > 0 && (
               <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800 flex justify-between items-center">
-                <span className="text-gray-500 dark:text-gray-400">共 {activeGroup.totalCups} 杯</span>
-                <span className="text-xl font-bold text-milk-600 dark:text-milk-400">${activeGroup.totalAmount}</span>
+                <span className="text-gray-500 dark:text-gray-400">
+                  共 {activeGroup.totalCups} 杯
+                </span>
+                <span className="text-xl font-bold text-milk-600 dark:text-milk-400">
+                  ${activeGroup.totalAmount}
+                </span>
               </div>
             )}
           </div>
@@ -188,9 +310,10 @@ export default function MenuBrowser({
         <OrderForm
           item={selectedItem}
           menu={menu}
+          initialOrder={editingOrder}
           lastPersonName={lastPersonName}
-          onSubmit={handleAddOrder}
-          onClose={() => setSelectedItem(null)}
+          onSubmit={handleSubmitOrder}
+          onClose={handleCloseForm}
         />
       )}
 

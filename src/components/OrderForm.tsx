@@ -1,9 +1,15 @@
-import { useState, useEffect, useRef } from 'react';
-import type { SearchableItem, StoreMenu, OrderTopping } from '../types';
+import { useState, useEffect, useRef } from "react";
+import type {
+  SearchableItem,
+  StoreMenu,
+  OrderTopping,
+  OrderItem,
+} from "../types";
 
 interface Props {
   item: SearchableItem;
   menu: StoreMenu;
+  initialOrder?: OrderItem | null;
   lastPersonName: string;
   onSubmit: (order: {
     personName: string;
@@ -20,20 +26,37 @@ interface Props {
   onClose: () => void;
 }
 
-export default function OrderForm({ item, menu, lastPersonName, onSubmit, onClose }: Props) {
+export default function OrderForm({
+  item,
+  menu,
+  initialOrder = null,
+  lastPersonName,
+  onSubmit,
+  onClose,
+}: Props) {
   const sizes = Object.entries(item.prices);
   const sweetOptions = item.sweetOptions ?? menu.defaultSweetOptions;
   const iceOptions = item.iceOptions ?? menu.defaultIceOptions;
   const toppings = item.toppings ?? menu.defaultToppings ?? [];
+  const isEditing = initialOrder !== null;
+  const defaultPersonName =
+    initialOrder?.personName ?? (lastPersonName || "客戶1");
 
-  const [personName, setPersonName] = useState(lastPersonName || '客戶1');
-  const defaultSize = sizes.find(([s]) => s === 'XL')?.[0] ?? sizes[sizes.length - 1]?.[0] ?? 'M';
-  const [size, setSize] = useState(defaultSize);
-  const [sweet, setSweet] = useState(sweetOptions[0] ?? '正常');
-  const [ice, setIce] = useState(iceOptions[0] ?? '正常冰');
-  const [selectedToppings, setSelectedToppings] = useState<OrderTopping[]>([]);
-  const [quantity, setQuantity] = useState(1);
-  const [note, setNote] = useState('');
+  const defaultSize =
+    sizes.find(([s]) => s === "XL")?.[0] ?? sizes[sizes.length - 1]?.[0] ?? "M";
+  const [personName, setPersonName] = useState(defaultPersonName);
+  const [size, setSize] = useState(initialOrder?.size ?? defaultSize);
+  const [sweet, setSweet] = useState(
+    initialOrder?.sweet ?? sweetOptions[0] ?? "正常",
+  );
+  const [ice, setIce] = useState(
+    initialOrder?.ice ?? iceOptions[0] ?? "正常冰",
+  );
+  const [selectedToppings, setSelectedToppings] = useState<OrderTopping[]>(
+    initialOrder?.toppings ?? [],
+  );
+  const [quantity, setQuantity] = useState(initialOrder?.quantity ?? 1);
+  const [note, setNote] = useState(initialOrder?.note ?? "");
 
   const nameInputRef = useRef<HTMLInputElement>(null);
 
@@ -42,12 +65,12 @@ export default function OrderForm({ item, menu, lastPersonName, onSubmit, onClos
     if (!personName && nameInputRef.current) {
       nameInputRef.current.focus();
     }
-  }, []);
+  }, [personName]);
 
   const toggleTopping = (topping: { name: string; price: number }) => {
-    setSelectedToppings(prev => {
-      const exists = prev.find(t => t.name === topping.name);
-      if (exists) return prev.filter(t => t.name !== topping.name);
+    setSelectedToppings((prev) => {
+      const exists = prev.find((t) => t.name === topping.name);
+      if (exists) return prev.filter((t) => t.name !== topping.name);
       return [...prev, { name: topping.name, price: topping.price }];
     });
   };
@@ -76,7 +99,10 @@ export default function OrderForm({ item, menu, lastPersonName, onSubmit, onClos
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center" onClick={onClose}>
+    <div
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center"
+      onClick={onClose}
+    >
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm animate-fade-in" />
 
@@ -84,11 +110,13 @@ export default function OrderForm({ item, menu, lastPersonName, onSubmit, onClos
       <div
         className="relative w-full max-w-md max-h-[90dvh] overflow-y-auto bg-white dark:bg-gray-900 
                    rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl animate-slide-up"
-        onClick={e => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
         <div className="flex items-center justify-between mb-5">
-          <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100">{item.name}</h3>
+          <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100">
+            {isEditing ? `編輯 ${item.name}` : item.name}
+          </h3>
           <button
             onClick={onClose}
             className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 
@@ -100,12 +128,14 @@ export default function OrderForm({ item, menu, lastPersonName, onSubmit, onClos
 
         {/* Person Name */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1.5">👤 點餐人</label>
+          <label className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1.5">
+            👤 點餐人
+          </label>
           <input
             ref={nameInputRef}
             type="text"
             value={personName}
-            onChange={e => setPersonName(e.target.value)}
+            onChange={(e) => setPersonName(e.target.value)}
             placeholder="輸入姓名"
             className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 
                        rounded-xl text-gray-800 dark:text-gray-100 placeholder:text-gray-400
@@ -116,16 +146,19 @@ export default function OrderForm({ item, menu, lastPersonName, onSubmit, onClos
         {/* Size */}
         {sizes.length > 1 && (
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1.5">📏 大小杯</label>
+            <label className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1.5">
+              📏 大小杯
+            </label>
             <div className="flex gap-2">
               {sizes.map(([s, price]) => (
                 <button
                   key={s}
                   onClick={() => setSize(s)}
                   className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-all duration-200
-                    ${s === size
-                      ? 'bg-milk-500 text-white shadow-md shadow-milk-500/30'
-                      : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                    ${
+                      s === size
+                        ? "bg-milk-500 text-white shadow-md shadow-milk-500/30"
+                        : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
                     }`}
                 >
                   {s} · ${price}
@@ -137,16 +170,19 @@ export default function OrderForm({ item, menu, lastPersonName, onSubmit, onClos
 
         {/* Sweet */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1.5">🍬 甜度</label>
+          <label className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1.5">
+            🍬 甜度
+          </label>
           <div className="flex flex-wrap gap-2">
-            {sweetOptions.map(opt => (
+            {sweetOptions.map((opt) => (
               <button
                 key={opt}
                 onClick={() => setSweet(opt)}
                 className={`px-3 py-2 rounded-xl text-sm transition-all duration-200
-                  ${opt === sweet
-                    ? 'bg-amber-500 text-white shadow-md shadow-amber-500/30'
-                    : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                  ${
+                    opt === sweet
+                      ? "bg-amber-500 text-white shadow-md shadow-amber-500/30"
+                      : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
                   }`}
               >
                 {opt}
@@ -157,16 +193,19 @@ export default function OrderForm({ item, menu, lastPersonName, onSubmit, onClos
 
         {/* Ice */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1.5">🧊 冰塊</label>
+          <label className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1.5">
+            🧊 冰塊
+          </label>
           <div className="flex flex-wrap gap-2">
-            {iceOptions.map(opt => (
+            {iceOptions.map((opt) => (
               <button
                 key={opt}
                 onClick={() => setIce(opt)}
                 className={`px-3 py-2 rounded-xl text-sm transition-all duration-200
-                  ${opt === ice
-                    ? 'bg-sky-500 text-white shadow-md shadow-sky-500/30'
-                    : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                  ${
+                    opt === ice
+                      ? "bg-sky-500 text-white shadow-md shadow-sky-500/30"
+                      : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
                   }`}
               >
                 {opt}
@@ -178,18 +217,23 @@ export default function OrderForm({ item, menu, lastPersonName, onSubmit, onClos
         {/* Toppings */}
         {toppings.length > 0 && (
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1.5">✨ 加料</label>
+            <label className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1.5">
+              ✨ 加料
+            </label>
             <div className="flex flex-wrap gap-2">
-              {toppings.map(tp => {
-                const isSelected = selectedToppings.some(t => t.name === tp.name);
+              {toppings.map((tp) => {
+                const isSelected = selectedToppings.some(
+                  (t) => t.name === tp.name,
+                );
                 return (
                   <button
                     key={tp.name}
                     onClick={() => toggleTopping(tp)}
                     className={`px-3 py-2 rounded-xl text-sm transition-all duration-200
-                      ${isSelected
-                        ? 'bg-tea-500 text-white shadow-md shadow-tea-500/30'
-                        : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                      ${
+                        isSelected
+                          ? "bg-tea-500 text-white shadow-md shadow-tea-500/30"
+                          : "bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
                       }`}
                   >
                     {tp.name} +${tp.price}
@@ -202,7 +246,9 @@ export default function OrderForm({ item, menu, lastPersonName, onSubmit, onClos
 
         {/* Quantity */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1.5">🔢 數量</label>
+          <label className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1.5">
+            🔢 數量
+          </label>
           <div className="flex items-center gap-3">
             <button
               onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -211,7 +257,9 @@ export default function OrderForm({ item, menu, lastPersonName, onSubmit, onClos
             >
               −
             </button>
-            <span className="text-xl font-bold text-gray-800 dark:text-gray-100 w-10 text-center">{quantity}</span>
+            <span className="text-xl font-bold text-gray-800 dark:text-gray-100 w-10 text-center">
+              {quantity}
+            </span>
             <button
               onClick={() => setQuantity(quantity + 1)}
               className="w-10 h-10 rounded-xl bg-gray-100 dark:bg-gray-800 text-lg font-bold 
@@ -224,11 +272,13 @@ export default function OrderForm({ item, menu, lastPersonName, onSubmit, onClos
 
         {/* Note */}
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1.5">📝 備註</label>
+          <label className="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-1.5">
+            📝 備註
+          </label>
           <input
             type="text"
             value={note}
-            onChange={e => setNote(e.target.value)}
+            onChange={(e) => setNote(e.target.value)}
             placeholder="如：不要塑膠袋、需要提袋..."
             className="w-full px-3.5 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 
                        rounded-xl text-gray-800 dark:text-gray-100 placeholder:text-gray-400
@@ -244,7 +294,7 @@ export default function OrderForm({ item, menu, lastPersonName, onSubmit, onClos
                      hover:shadow-xl hover:shadow-milk-500/40
                      active:scale-[0.98] transition-all duration-200"
         >
-          加入訂單 · ${subtotal}
+          {isEditing ? `更新訂單 · $${subtotal}` : `加入訂單 · $${subtotal}`}
         </button>
       </div>
     </div>

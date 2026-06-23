@@ -1,28 +1,30 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
-import type { StoreInfo } from './types';
-import { useStoreIndex, useMenu } from './hooks/useMenu';
-import { useOrders } from './hooks/useOrders';
-import StoreSelector from './components/StoreSelector';
-import MenuBrowser from './components/MenuBrowser';
-import AdminPanel from './components/AdminPanel';
-import './index.css';
+import { useState, useRef, useEffect, useCallback } from "react";
+import type { StoreInfo } from "./types";
+import { useStoreIndex, useMenu } from "./hooks/useMenu";
+import { useOrders } from "./hooks/useOrders";
+import StoreSelector from "./components/StoreSelector";
+import MenuBrowser from "./components/MenuBrowser";
+import AdminPanel from "./components/AdminPanel";
+import "./index.css";
 
-type Page = 'select' | 'menu' | 'admin';
+type Page = "select" | "menu" | "admin";
 
-const USER_NAME_KEY = 'drink-order-user-name';
+const USER_NAME_KEY = "drink-order-user-name";
 
 function App() {
-  const [page, setPage] = useState<Page>('select');
+  const [page, setPage] = useState<Page>("select");
   const [selectedStore, setSelectedStore] = useState<StoreInfo | null>(null);
 
   // userName: required, stored in localStorage
   const [userName, setUserName] = useState<string>(() => {
-    return localStorage.getItem(USER_NAME_KEY) || '';
+    return localStorage.getItem(USER_NAME_KEY) || "";
   });
-  const [showNameGate, setShowNameGate] = useState(() => !localStorage.getItem(USER_NAME_KEY));
-  const [nameInput, setNameInput] = useState('');
+  const [showNameGate, setShowNameGate] = useState(
+    () => !localStorage.getItem(USER_NAME_KEY),
+  );
+  const [nameInput, setNameInput] = useState("");
   const [isEditingName, setIsEditingName] = useState(false);
-  const [editNameInput, setEditNameInput] = useState('');
+  const [editNameInput, setEditNameInput] = useState("");
   const [showSettings, setShowSettings] = useState(false);
   const editNameRef = useRef<HTMLInputElement>(null);
   const gateInputRef = useRef<HTMLInputElement>(null);
@@ -43,7 +45,10 @@ function App() {
 
   // Click-outside to close settings dropdown
   const handleOutsideClick = useCallback((e: MouseEvent) => {
-    if (settingsRef.current && !settingsRef.current.contains(e.target as Node)) {
+    if (
+      settingsRef.current &&
+      !settingsRef.current.contains(e.target as Node)
+    ) {
       setShowSettings(false);
       setIsEditingName(false);
     }
@@ -51,11 +56,11 @@ function App() {
 
   useEffect(() => {
     if (showSettings) {
-      document.addEventListener('mousedown', handleOutsideClick);
+      document.addEventListener("mousedown", handleOutsideClick);
     } else {
-      document.removeEventListener('mousedown', handleOutsideClick);
+      document.removeEventListener("mousedown", handleOutsideClick);
     }
-    return () => document.removeEventListener('mousedown', handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, [showSettings, handleOutsideClick]);
 
   const handleNameGateSubmit = () => {
@@ -64,7 +69,7 @@ function App() {
     setUserName(trimmed);
     localStorage.setItem(USER_NAME_KEY, trimmed);
     setShowNameGate(false);
-    setNameInput('');
+    setNameInput("");
   };
 
   const handleEditNameSubmit = () => {
@@ -78,14 +83,20 @@ function App() {
   const { stores, loading: storesLoading } = useStoreIndex();
   const { menu, loading: menuLoading } = useMenu(
     selectedStore?.id ?? null,
-    selectedStore?.menuFile ?? null
+    selectedStore?.menuFile ?? null,
   );
 
   const {
-    activeGroup, history,
-    startNewGroup, clearActiveGroup,
-    addItem, removeItem, removePersonItems,
-    closeGroup, deleteHistoryItem,
+    activeGroup,
+    history,
+    startNewGroup,
+    clearActiveGroup,
+    addItem,
+    removeItem,
+    removePersonItems,
+    updateItem,
+    closeGroup,
+    deleteHistoryItem,
   } = useOrders();
 
   const handleSelectStore = (store: StoreInfo) => {
@@ -94,27 +105,27 @@ function App() {
       clearActiveGroup();
     }
     setSelectedStore(store);
-    setPage('menu');
+    setPage("menu");
   };
 
   const handleResumeActiveGroup = () => {
     if (!activeGroup) return;
     // Find the store info from stores list
-    const store = stores.find(s => s.id === activeGroup.storeId);
+    const store = stores.find((s) => s.id === activeGroup.storeId);
     if (store) {
       setSelectedStore(store);
-      setPage('menu');
+      setPage("menu");
     }
   };
 
   const handleBack = () => {
-    setPage('select');
+    setPage("select");
     setSelectedStore(null);
   };
 
   const handleCloseGroup = () => {
     closeGroup();
-    setPage('select');
+    setPage("select");
     setSelectedStore(null);
   };
 
@@ -126,15 +137,17 @@ function App() {
 
   // Dark mode toggle with localStorage persistence
   const [darkMode, setDarkMode] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('theme');
+    if (typeof window !== "undefined") {
+      const stored = localStorage.getItem("theme");
       if (stored) {
-        const isDark = stored === 'dark';
-        document.documentElement.classList.toggle('dark', isDark);
+        const isDark = stored === "dark";
+        document.documentElement.classList.toggle("dark", isDark);
         return isDark;
       }
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      document.documentElement.classList.toggle('dark', prefersDark);
+      const prefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)",
+      ).matches;
+      document.documentElement.classList.toggle("dark", prefersDark);
       return prefersDark;
     }
     return false;
@@ -143,8 +156,8 @@ function App() {
   const toggleDarkMode = () => {
     const newDark = !darkMode;
     setDarkMode(newDark);
-    document.documentElement.classList.toggle('dark', newDark);
-    localStorage.setItem('theme', newDark ? 'dark' : 'light');
+    document.documentElement.classList.toggle("dark", newDark);
+    localStorage.setItem("theme", newDark ? "dark" : "light");
   };
 
   // Name gate modal — blocks everything
@@ -154,16 +167,22 @@ function App() {
         <div className="w-full max-w-sm mx-4 p-8 bg-white dark:bg-gray-900 rounded-3xl shadow-2xl border border-gray-100 dark:border-gray-800 animate-scale-in">
           <div className="text-center mb-6">
             <div className="text-5xl mb-3">🧋</div>
-            <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">歡迎使用飲料點餐</h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">請先輸入您的名稱，此名稱將用於訂單彙總</p>
+            <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">
+              歡迎使用飲料點餐
+            </h2>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+              請先輸入您的名稱，此名稱將用於訂單彙總
+            </p>
           </div>
           <div className="space-y-4">
             <input
               ref={gateInputRef}
               type="text"
               value={nameInput}
-              onChange={e => setNameInput(e.target.value)}
-              onKeyDown={e => { if (e.key === 'Enter') handleNameGateSubmit(); }}
+              onChange={(e) => setNameInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleNameGateSubmit();
+              }}
               placeholder="請輸入您的名稱"
               className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 
                          rounded-xl text-gray-800 dark:text-gray-100 placeholder:text-gray-400
@@ -194,13 +213,13 @@ function App() {
         <button
           id="settings-toggle"
           onClick={() => {
-            setShowSettings(prev => !prev);
+            setShowSettings((prev) => !prev);
             setIsEditingName(false);
           }}
           className={`w-10 h-10 flex items-center justify-center rounded-full
                      bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700
                      shadow-lg hover:scale-110 transition-all duration-200 text-gray-600 dark:text-gray-300
-                     ${showSettings ? 'rotate-45 bg-white dark:bg-gray-800 scale-110' : ''}`}
+                     ${showSettings ? "rotate-45 bg-white dark:bg-gray-800 scale-110" : ""}`}
           title="設定"
         >
           ⚙️
@@ -208,23 +227,26 @@ function App() {
 
         {/* Dropdown panel */}
         {showSettings && (
-          <div className="absolute top-13 right-0 w-56 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md
+          <div
+            className="absolute top-13 right-0 w-56 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md
                           border border-gray-100 dark:border-gray-700 rounded-2xl shadow-2xl
-                          p-3 space-y-2 animate-scale-in origin-top-right">
-
+                          p-3 space-y-2 animate-scale-in origin-top-right"
+          >
             {/* userName row */}
             <div className="px-1">
-              <p className="text-xs font-medium text-gray-400 dark:text-gray-500 mb-1.5 uppercase tracking-wide">使用者名稱</p>
+              <p className="text-xs font-medium text-gray-400 dark:text-gray-500 mb-1.5 uppercase tracking-wide">
+                使用者名稱
+              </p>
               {isEditingName ? (
                 <div className="flex items-center gap-1.5">
                   <input
                     ref={editNameRef}
                     type="text"
                     value={editNameInput}
-                    onChange={e => setEditNameInput(e.target.value)}
-                    onKeyDown={e => {
-                      if (e.key === 'Enter') handleEditNameSubmit();
-                      if (e.key === 'Escape') setIsEditingName(false);
+                    onChange={(e) => setEditNameInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") handleEditNameSubmit();
+                      if (e.key === "Escape") setIsEditingName(false);
                     }}
                     className="flex-1 px-2.5 py-1.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700
                                rounded-lg text-sm text-gray-800 dark:text-gray-100
@@ -250,8 +272,12 @@ function App() {
                              text-left transition-colors group"
                 >
                   <span className="text-base">👤</span>
-                  <span className="flex-1 text-sm font-medium text-gray-700 dark:text-gray-200 truncate">{userName}</span>
-                  <span className="text-xs text-gray-400 dark:text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">編輯</span>
+                  <span className="flex-1 text-sm font-medium text-gray-700 dark:text-gray-200 truncate">
+                    {userName}
+                  </span>
+                  <span className="text-xs text-gray-400 dark:text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                    編輯
+                  </span>
                 </button>
               )}
             </div>
@@ -265,9 +291,9 @@ function App() {
               className="w-full flex items-center gap-3 px-2.5 py-2 rounded-lg
                          hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-left"
             >
-              <span className="text-base">{darkMode ? '☀️' : '🌙'}</span>
+              <span className="text-base">{darkMode ? "☀️" : "🌙"}</span>
               <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
-                {darkMode ? '切換亮色模式' : '切換深色模式'}
+                {darkMode ? "切換亮色模式" : "切換深色模式"}
               </span>
             </button>
           </div>
@@ -275,7 +301,7 @@ function App() {
       </div>
 
       {/* Pages */}
-      {page === 'select' && (
+      {page === "select" && (
         <StoreSelector
           stores={stores}
           loading={storesLoading}
@@ -284,15 +310,16 @@ function App() {
           onSelectStore={handleSelectStore}
           onResumeActiveGroup={handleResumeActiveGroup}
           onDeleteHistoryItem={deleteHistoryItem}
-          onNavigateAdmin={() => setPage('admin')}
+          onNavigateAdmin={() => setPage("admin")}
         />
       )}
 
-      {page === 'menu' && menu && (
+      {page === "menu" && menu && (
         <MenuBrowser
           menu={menu}
           activeGroup={activeGroup}
           onAddItem={addItem}
+          onUpdateItem={updateItem}
           onRemoveItem={removeItem}
           onRemovePersonItems={removePersonItems}
           onBack={handleBack}
@@ -302,7 +329,7 @@ function App() {
         />
       )}
 
-      {page === 'menu' && menuLoading && (
+      {page === "menu" && menuLoading && (
         <div className="flex items-center justify-center min-h-dvh">
           <div className="text-center animate-fade-in">
             <div className="text-5xl mb-4 animate-bounce">🧋</div>
@@ -311,9 +338,7 @@ function App() {
         </div>
       )}
 
-      {page === 'admin' && (
-        <AdminPanel onBack={handleBack} />
-      )}
+      {page === "admin" && <AdminPanel onBack={handleBack} />}
     </div>
   );
 }
