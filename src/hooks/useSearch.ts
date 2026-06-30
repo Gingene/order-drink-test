@@ -5,6 +5,7 @@ import type { StoreMenu, SearchableItem } from '../types';
 export function useSearch(menu: StoreMenu | null) {
   const [query, setQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
 
   // Flatten all items with category info for search
   const allItems = useMemo<SearchableItem[]>(() => {
@@ -15,6 +16,24 @@ export function useSearch(menu: StoreMenu | null) {
         categoryName: cat.name,
       }))
     );
+  }, [menu]);
+
+  // Extract all unique tags
+  const allTags = useMemo<string[]>(() => {
+    if (!menu) return [];
+    const tagsSet = new Set<string>();
+    menu.categories.forEach(cat => {
+      cat.items.forEach(item => {
+        if (item.tags) {
+          item.tags.forEach(tag => {
+            if (tag.trim()) {
+              tagsSet.add(tag.trim());
+            }
+          });
+        }
+      });
+    });
+    return Array.from(tagsSet).sort((a, b) => a.localeCompare(b, 'zh-Hant'));
   }, [menu]);
 
   // Create Fuse instance for fuzzy search
@@ -42,13 +61,18 @@ export function useSearch(menu: StoreMenu | null) {
       items = allItems;
     }
 
+    // Filter by tag
+    if (selectedTag) {
+      items = items.filter(item => item.tags && item.tags.includes(selectedTag));
+    }
+
     // Filter by category
     if (activeCategory) {
       items = items.filter(item => item.categoryName === activeCategory);
     }
 
     return items;
-  }, [query, activeCategory, fuse, allItems]);
+  }, [query, selectedTag, activeCategory, fuse, allItems]);
 
   const categories = useMemo(() => {
     if (!menu) return [];
@@ -58,6 +82,7 @@ export function useSearch(menu: StoreMenu | null) {
   const clearSearch = useCallback(() => {
     setQuery('');
     setActiveCategory(null);
+    setSelectedTag(null);
   }, []);
 
   return {
@@ -65,6 +90,9 @@ export function useSearch(menu: StoreMenu | null) {
     setQuery,
     activeCategory,
     setActiveCategory,
+    selectedTag,
+    setSelectedTag,
+    allTags,
     results,
     categories,
     clearSearch,

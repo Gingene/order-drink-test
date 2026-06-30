@@ -85,6 +85,9 @@ export default function MenuBrowser({
     setQuery,
     activeCategory,
     setActiveCategory,
+    selectedTag,
+    setSelectedTag,
+    allTags,
     results,
     categories,
     clearSearch,
@@ -186,6 +189,9 @@ export default function MenuBrowser({
             onQueryChange={setQuery}
             onClear={clearSearch}
             resultCount={results.length}
+            tags={allTags}
+            selectedTag={selectedTag}
+            onTagChange={setSelectedTag}
           />
 
           <div className="mt-3">
