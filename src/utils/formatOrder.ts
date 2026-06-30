@@ -41,7 +41,14 @@ export function formatByPerson(storeName: string, items: OrderItem[]): string {
  */
 export function formatBySummary(storeName: string, items: OrderItem[], userName?: string): string {
   // Group by item name + size + sweet + ice + toppings combination
-  const grouped = new Map<string, { item: OrderItem; totalQty: number }>();
+  const grouped = new Map<
+    string,
+    {
+      item: OrderItem;
+      totalQty: number;
+      notes: Map<string, number>;
+    }
+  >();
 
   items.forEach(item => {
     const toppingsKey = item.toppings.map(t => t.name).sort().join(',');
@@ -50,10 +57,19 @@ export function formatBySummary(storeName: string, items: OrderItem[], userName?
     const existing = grouped.get(key);
     if (existing) {
       existing.totalQty += item.quantity;
+      if (item.note) {
+        const count = existing.notes.get(item.note) || 0;
+        existing.notes.set(item.note, count + item.quantity);
+      }
     } else {
+      const notes = new Map<string, number>();
+      if (item.note) {
+        notes.set(item.note, item.quantity);
+      }
       grouped.set(key, {
         item,
         totalQty: item.quantity,
+        notes,
       });
     }
   });
@@ -63,13 +79,24 @@ export function formatBySummary(storeName: string, items: OrderItem[], userName?
   text += `━━━━━━━━━━━━━━\n`;
 
   let idx = 0;
-  grouped.forEach(({ item, totalQty }) => {
+  grouped.forEach(({ item, totalQty, notes }) => {
     idx++;
     const toppingsStr = item.toppings.length > 0
       ? ` +${item.toppings.map(t => t.name).join('+')}`
       : '';
+    
+    // Format notes string if present
+    let notesStr = '';
+    if (notes.size > 0) {
+      const notesList: string[] = [];
+      notes.forEach((qty, note) => {
+        notesList.push(`${note} ×${qty}`);
+      });
+      notesStr = ` (${notesList.join(', ')})`;
+    }
+
     text += `${idx}. ${item.itemName}(${item.size}) ×${totalQty}\n`;
-    text += `   ${item.sweet}/${item.ice}${toppingsStr}\n`;
+    text += `   ${item.sweet}/${item.ice}${toppingsStr}${notesStr}\n`;
   });
 
   return text;
