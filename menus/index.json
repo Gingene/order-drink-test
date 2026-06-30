@@ -11,6 +11,12 @@
       "name": "古曼",
       "description": "採用特級蔗糖與當季水果，推薦純粹原味茶與濃煮鮮奶系列",
       "menuFile": "oldmon.json"
+    },
+    {
+      "id": "ching-yuan",
+      "name": "品源 (原清原芋圓 嘉義大埔美店)",
+      "description": "芋頭沙西米露、小芋圓奶茶專賣，飲料全面買五送一，折扣 30 元",
+      "menuFile": "ching-yuan.json"
     }
   ]
 }
