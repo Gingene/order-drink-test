@@ -1,0 +1,150 @@
+{
+  "storeId": "ching-yuan",
+  "storeName": "品源 (原清原芋圓 嘉義大埔美店)",
+  "defaultSweetOptions": ["正常", "少糖", "半糖", "微糖", "一分糖", "無糖"],
+  "defaultIceOptions": ["正常冰", "少冰", "微冰", "去冰", "完全去冰", "常溫", "熱飲"],
+  "defaultToppings": [
+    { "name": "珍珠", "price": 10 },
+    { "name": "椰果", "price": 10 },
+    { "name": "雙Q", "price": 10 },
+    { "name": "仙草凍", "price": 10 },
+    { "name": "蜂蜜凍", "price": 10 },
+    { "name": "西米露", "price": 10 },
+    { "name": "紅豆", "price": 15 },
+    { "name": "綠豆", "price": 15 },
+    { "name": "黃金粉角", "price": 15 },
+    { "name": "蘆薈", "price": 15 },
+    { "name": "水蜜桃粉粿", "price": 15 },
+    { "name": "oreo", "price": 15 },
+    { "name": "布丁", "price": 15 },
+    { "name": "三兄弟(珍珠+椰果+小芋圓)", "price": 20 },
+    { "name": "小芋圓", "price": 20 },
+    { "name": "牛奶", "price": 20 },
+    { "name": "冰淇淋", "price": 20 }
+  ],
+  "categories": [
+    {
+      "name": "小薇的兒時玩伴",
+      "items": [
+        { "id": "cy-001", "name": "陳春莓 [草莓+綠茶]", "prices": { "L": 65 }, "tags": ["草莓", "綠茶"], "iceOptions": ["微冰"] },
+        { "id": "cy-002", "name": "李芒芒 [芒果+綠茶]", "prices": { "L": 65 }, "tags": ["芒果", "綠茶"], "iceOptions": ["微冰"] },
+        { "id": "cy-003", "name": "葡旭峻 [葡萄+鐵觀音]", "prices": { "L": 65 }, "tags": ["推薦", "葡萄", "鐵觀音"], "iceOptions": ["微冰"], "sweetOptions": ["固定"] },
+        { "id": "cy-004", "name": "張小蘋 [蘋果+綠茶]", "prices": { "L": 65 }, "tags": ["蘋果", "綠茶"], "iceOptions": ["微冰"] }
+      ]
+    },
+    {
+      "name": "手作",
+      "items": [
+        { "id": "cy-011", "name": "桃之天天 [金萱/綠/紅]", "prices": { "L": 65 }, "tags": ["推薦", "金萱", "綠茶", "紅茶", "水蜜桃粉粿", "果肉"] },
+        { "id": "cy-012", "name": "蜜桃金萱茶 [綠/紅茶]", "prices": { "L": 55 }, "tags": ["蜜桃", "金萱", "綠茶", "紅茶"] },
+        { "id": "cy-013", "name": "巨峰葡萄玉露 (蘆薈)", "prices": { "L": 55 }, "tags": ["葡萄", "蘆薈"] },
+        { "id": "cy-014", "name": "青茶3Q", "prices": { "L": 55 }, "tags": ["推薦", "青茶", "珍珠", "椰果", "蜂蜜凍"] },
+        { "id": "cy-015", "name": "柳橙多多多 / 百香多多多", "prices": { "L": 60 }, "tags": ["柳橙", "百香果", "多多"] },
+        { "id": "cy-016", "name": "綠茶多多", "prices": { "L": 50 }, "tags": ["綠茶", "多多"] },
+        { "id": "cy-017", "name": "冰淇淋紅茶", "prices": { "L": 55 }, "tags": ["冰淇淋", "紅茶"] },
+        { "id": "cy-018", "name": "芒果冰淇淋", "prices": { "L": 60 }, "tags": ["芒果", "冰淇淋"], "sweetOptions": ["固定"] },
+        { "id": "cy-019", "name": "超濃厚奶茶", "prices": { "L": 60 }, "tags": ["推薦", "奶茶"], "sweetOptions": ["固定"] },
+        { "id": "cy-020", "name": "梅釀綠茶", "prices": { "L": 40 }, "tags": ["梅子", "綠茶"] }
+      ]
+    },
+    {
+      "name": "沙沙",
+      "items": [
+        { "id": "cy-031", "name": "芋頭沙西米露", "prices": { "L": 60 }, "tags": ["推薦", "芋頭", "西米露"], "sweetOptions": ["固定"] },
+        { "id": "cy-032", "name": "芋頭牛奶沙", "prices": { "L": 70 }, "tags": ["推薦", "芋頭", "牛奶"], "sweetOptions": ["固定"] },
+        { "id": "cy-033", "name": "紅豆芋頭沙", "prices": { "L": 65 }, "tags": ["紅豆", "芋頭"], "sweetOptions": ["固定"] },
+        { "id": "cy-034", "name": "炭燒綠豆沙", "prices": { "L": 50 }, "tags": ["綠豆"], "sweetOptions": ["固定"] },
+        { "id": "cy-035", "name": "綠豆沙牛奶", "prices": { "L": 65 }, "tags": ["推薦", "綠豆", "牛奶"], "sweetOptions": ["固定"] },
+        { "id": "cy-036", "name": "紅豆沙牛奶", "prices": { "L": 65 }, "tags": ["紅豆", "牛奶"], "sweetOptions": ["固定"] },
+        { "id": "cy-037", "name": "芒果冰沙", "prices": { "L": 55 }, "tags": ["芒果"], "sweetOptions": ["固定"] },
+        { "id": "cy-038", "name": "oreo可可冰沙", "prices": { "L": 55 }, "tags": ["巧克力", "oreo"], "sweetOptions": ["固定"] }
+      ]
+    },
+    {
+      "name": "鮮奶",
+      "items": [
+        { "id": "cy-041", "name": "復刻鮮奶紅茶", "prices": { "L": 60 }, "tags": ["推薦", "鮮奶", "紅茶"], "sweetOptions": ["固定"] },
+        { "id": "cy-042", "name": "鮮奶紅茶 [綠/鐵觀音]", "prices": { "L": 60 }, "tags": ["鮮奶", "紅茶", "綠茶", "鐵觀音"] },
+        { "id": "cy-043", "name": "鮮奶紅萱", "prices": { "L": 65 }, "tags": ["推薦", "鮮奶", "紅萱"] },
+        { "id": "cy-044", "name": "珍珠鮮奶紅茶 [綠/鐵觀音]", "prices": { "L": 65 }, "tags": ["鮮奶", "紅茶", "綠茶", "鐵觀音", "珍珠"] },
+        { "id": "cy-045", "name": "岩漿珍珠鮮奶", "prices": { "L": 75 }, "tags": ["珍珠", "鮮奶"], "sweetOptions": ["固定"] },
+        { "id": "cy-046", "name": "岩漿鮮奶仙草凍", "prices": { "L": 75 }, "tags": ["鮮奶", "仙草"], "sweetOptions": ["固定"] },
+        { "id": "cy-047", "name": "啵啵芋妳", "prices": { "L": 70 }, "tags": ["芋頭", "鮮奶綠", "小芋圓"], "sweetOptions": ["固定"] },
+        { "id": "cy-048", "name": "芋露奶奶", "prices": { "L": 70 }, "tags": ["推薦", "芋頭", "牛奶", "西米露"], "sweetOptions": ["固定"] },
+        { "id": "cy-049", "name": "紅芋珍吸源", "prices": { "L": 70 }, "tags": ["推薦", "芋頭", "牛奶", "紅豆", "珍珠", "小芋圓"], "sweetOptions": ["固定"] },
+        { "id": "cy-050", "name": "甘蔗鮮奶", "prices": { "L": 65 }, "tags": ["甘蔗", "鮮奶"] }
+      ]
+    },
+    {
+      "name": "醇奶",
+      "items": [
+        { "id": "cy-061", "name": "經典奶茶", "prices": { "L": 45 }, "tags": ["奶茶"] },
+        { "id": "cy-062", "name": "仙草凍鐵觀音奶 [奶茶]", "prices": { "L": 50 }, "tags": ["推薦", "仙草", "鐵觀音", "奶茶"] },
+        { "id": "cy-063", "name": "黃金粉角奶茶", "prices": { "L": 55 }, "tags": ["推薦", "粉角", "奶茶"] },
+        { "id": "cy-064", "name": "珍珠奶茶 [綠/鐵觀音]", "prices": { "L": 50 }, "tags": ["珍珠", "奶茶"] },
+        { "id": "cy-065", "name": "雙Q奶茶 [綠/鐵觀音]", "prices": { "L": 55 }, "tags": ["珍珠", "椰果", "奶茶"] },
+        { "id": "cy-066", "name": "小芋圓奶茶 [綠/鐵觀音]", "prices": { "L": 60 }, "tags": ["推薦", "小芋圓", "奶茶"] },
+        { "id": "cy-067", "name": "三兄弟奶茶 [綠/鐵觀音]", "prices": { "L": 65 }, "tags": ["小芋圓", "珍珠", "椰果", "奶茶"] },
+        { "id": "cy-068", "name": "布丁奶茶 (2顆布丁)", "prices": { "L": 65 }, "tags": ["布丁", "奶茶"] },
+        { "id": "cy-069", "name": "蜂蜜凍奶茶", "prices": { "L": 60 }, "tags": ["蜂蜜凍", "奶茶"] }
+      ]
+    },
+    {
+      "name": "果茶",
+      "items": [
+        { "id": "cy-081", "name": "綠檸蜜茶 [青茶]", "prices": { "L": 60 }, "tags": ["檸檬", "蜂蜜", "青茶"], "sweetOptions": ["固定"] },
+        { "id": "cy-082", "name": "柳橙綠茶 [紅茶]", "prices": { "L": 60 }, "tags": ["柳橙", "綠茶", "紅茶"] },
+        { "id": "cy-083", "name": "甘蔗青茶", "prices": { "L": 60 }, "tags": ["推薦", "甘蔗", "青茶"] },
+        { "id": "cy-084", "name": "百香雙Q綠 [青茶]", "prices": { "L": 60 }, "tags": ["推薦", "百香果", "珍珠", "椰果", "綠茶", "青茶"] },
+        { "id": "cy-085", "name": "檸檬青茶 [紅/綠茶]", "prices": { "L": 55 }, "tags": ["檸檬", "青茶", "紅茶", "綠茶"] },
+        { "id": "cy-086", "name": "果香檸紅", "prices": { "L": 65 }, "tags": ["推薦", "檸檬", "紅茶"] },
+        { "id": "cy-087", "name": "蜂蜜檸檬蘆薈", "prices": { "L": 65 }, "tags": ["蜂蜜", "檸檬", "蘆薈"], "sweetOptions": ["固定"] }
+      ]
+    },
+    {
+      "name": "好茶",
+      "items": [
+        { "id": "cy-101", "name": "台灣青茶", "prices": { "L": 30 }, "tags": ["推薦", "青茶"] },
+        { "id": "cy-102", "name": "三窨綠茶", "prices": { "L": 30 }, "tags": ["綠茶"] },
+        { "id": "cy-103", "name": "炭燒鐵觀音", "prices": { "L": 30 }, "tags": ["鐵觀音"] },
+        { "id": "cy-104", "name": "金萱烏龍茶", "prices": { "L": 30 }, "tags": ["推薦", "烏龍茶"] },
+        { "id": "cy-105", "name": "熟成紅茶", "prices": { "L": 30 }, "tags": ["紅茶"] },
+        { "id": "cy-106", "name": "仙草甘茶", "prices": { "L": 30 }, "tags": ["仙草"] }
+      ]
+    },
+    {
+      "name": "蕎麥",
+      "items": [
+        { "id": "cy-121", "name": "黃金蕎麥茶", "prices": { "L": 35 }, "tags": ["推薦", "蕎麥"] },
+        { "id": "cy-122", "name": "蕎麥青茶", "prices": { "L": 35 }, "tags": ["蕎麥", "青茶"] },
+        { "id": "cy-123", "name": "冬瓜蕎麥", "prices": { "L": 35 }, "tags": ["冬瓜", "蕎麥"] },
+        { "id": "cy-124", "name": "蕎麥奶茶", "prices": { "L": 50 }, "tags": ["蕎麥", "奶茶"] },
+        { "id": "cy-125", "name": "蕎麥鮮奶", "prices": { "L": 65 }, "tags": ["推薦", "蕎麥", "鮮奶"] }
+      ]
+    },
+    {
+      "name": "冬瓜",
+      "items": [
+        { "id": "cy-131", "name": "古早味冬瓜茶", "prices": { "L": 30 }, "tags": ["冬瓜"], "sweetOptions": ["固定"] },
+        { "id": "cy-132", "name": "冬瓜青茶 [綠/鐵觀音]", "prices": { "L": 30 }, "tags": ["冬瓜", "青茶", "綠茶", "鐵觀音"] },
+        { "id": "cy-133", "name": "冬瓜檸檬", "prices": { "L": 50 }, "tags": ["冬瓜", "檸檬"], "sweetOptions": ["固定"] },
+        { "id": "cy-134", "name": "冬瓜鮮奶", "prices": { "L": 60 }, "tags": ["冬瓜", "鮮奶"], "sweetOptions": ["固定"] }
+      ]
+    },
+    {
+      "name": "冬季熱飲",
+      "items": [
+        { "id": "cy-141", "name": "阿華田可可", "prices": { "L": 55 }, "tags": ["巧克力", "可可"], "hot": true, "iceOptions": ["熱飲"] },
+        { "id": "cy-142", "name": "阿華田鮮奶", "prices": { "L": 60 }, "tags": ["鮮奶", "巧克力"], "hot": true, "iceOptions": ["熱飲"] },
+        { "id": "cy-143", "name": "燒仙草奶茶", "prices": { "L": 50 }, "tags": ["仙草", "奶茶"], "sweetOptions": ["固定"], "hot": true, "iceOptions": ["熱飲"] },
+        { "id": "cy-144", "name": "小芋圓燒奶", "prices": { "L": 65 }, "tags": ["推薦", "小芋圓", "燒仙草"], "sweetOptions": ["固定"], "hot": true, "iceOptions": ["熱飲"] },
+        { "id": "cy-145", "name": "桂圓紅棗茶", "prices": { "L": 50 }, "tags": ["桂圓", "紅棗"], "sweetOptions": ["固定"], "hot": true, "iceOptions": ["熱飲"] },
+        { "id": "cy-146", "name": "桂圓紅棗奶茶", "prices": { "L": 60 }, "tags": ["桂圓", "紅棗", "奶茶"], "sweetOptions": ["固定"], "hot": true, "iceOptions": ["熱飲"] },
+        { "id": "cy-147", "name": "桂圓紅棗鮮奶", "prices": { "L": 65 }, "tags": ["桂圓", "紅棗", "鮮奶"], "sweetOptions": ["固定"], "hot": true, "iceOptions": ["熱飲"] },
+        { "id": "cy-148", "name": "黑糖薑母茶", "prices": { "L": 50 }, "tags": ["黑糖", "薑母"], "sweetOptions": ["固定"], "hot": true, "iceOptions": ["熱飲"] },
+        { "id": "cy-149", "name": "黑糖薑母奶茶", "prices": { "L": 60 }, "tags": ["黑糖", "薑母", "奶茶"], "sweetOptions": ["固定"], "hot": true, "iceOptions": ["熱飲"] },
+        { "id": "cy-150", "name": "黑糖薑母鮮奶", "prices": { "L": 65 }, "tags": ["黑糖", "薑母", "鮮奶"], "sweetOptions": ["固定"], "hot": true, "iceOptions": ["熱飲"] }
+      ]
+    }
+  ]
+}

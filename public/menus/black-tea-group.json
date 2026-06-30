@@ -1,8 +1,8 @@
 {
   "storeId": "black-tea-group",
   "storeName": "紅茶幫",
-  "defaultSweetOptions": ["正常", "少糖", "半糖", "微糖", "無糖"],
-  "defaultIceOptions": ["正常冰", "少冰", "微冰", "去冰", "熱飲"],
+  "defaultSweetOptions": ["正常", "少糖", "半糖", "微糖", "一分糖", "無糖"],
+  "defaultIceOptions": ["正常冰", "少冰", "微冰", "去冰", "完全去冰", "常溫", "熱飲"],
   "defaultToppings": [
     { "name": "波霸", "price": 0 },
     { "name": "仙草凍", "price": 0 },
