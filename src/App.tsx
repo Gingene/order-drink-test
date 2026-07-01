@@ -326,6 +326,7 @@ function App() {
           onCloseGroup={handleCloseGroup}
           onStartGroup={handleStartGroup}
           userName={userName}
+          history={history}
         />
       )}
 
