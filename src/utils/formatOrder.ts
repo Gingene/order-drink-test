@@ -1,9 +1,9 @@
-import type { OrderItem, GroupOrder } from '../types';
+import type { OrderItem, GroupOrder, StoreMenu } from '../types';
 
 /**
  * Format: 按人分組
  */
-export function formatByPerson(storeName: string, items: OrderItem[]): string {
+export function formatByPerson(storeName: string, items: OrderItem[], menu?: StoreMenu): string {
   const grouped = new Map<string, OrderItem[]>();
   items.forEach(item => {
     const existing = grouped.get(item.personName) || [];
@@ -17,11 +17,23 @@ export function formatByPerson(storeName: string, items: OrderItem[]): string {
   grouped.forEach((orders, name) => {
     text += `👤 ${name}\n`;
     orders.forEach((order, idx) => {
+      const details: string[] = [];
+      if (order.sweet !== '固定') details.push(order.sweet);
+      if (order.ice !== '固定') details.push(order.ice);
+      const sweetIceStr = details.join('');
       const toppingsStr = order.toppings.length > 0
         ? ` +${order.toppings.map(t => t.name).join('+')}`
         : '';
+      const detailPart = (sweetIceStr || toppingsStr) ? ` ${sweetIceStr}${toppingsStr}` : '';
       const noteStr = order.note ? ` (${order.note})` : '';
-      text += `  ${numToCircle(idx + 1)} ${order.itemName}(${order.size}) ${order.sweet}${order.ice}${toppingsStr} ×${order.quantity}  $${order.subtotal}${noteStr}\n`;
+
+      const menuItem = menu?.categories
+        .flatMap(c => c.items)
+        .find(mi => mi.id === order.menuItemId);
+      const hasMultipleSizes = menuItem ? Object.keys(menuItem.prices).length > 1 : true;
+      const sizeStr = hasMultipleSizes ? `(${order.size})` : '';
+
+      text += `  ${numToCircle(idx + 1)} ${order.itemName}${sizeStr}${detailPart} ×${order.quantity}  $${order.subtotal}${noteStr}\n`;
     });
     const personTotal = orders.reduce((sum, o) => sum + o.subtotal, 0);
     text += `  📎 小計 $${personTotal}\n\n`;
@@ -39,7 +51,7 @@ export function formatByPerson(storeName: string, items: OrderItem[]): string {
 /**
  * Format: 品項彙總（方便店家備料）
  */
-export function formatBySummary(storeName: string, items: OrderItem[], userName?: string): string {
+export function formatBySummary(storeName: string, items: OrderItem[], userName?: string, menu?: StoreMenu): string {
   // Group by item name + size + sweet + ice + toppings combination
   const grouped = new Map<
     string,
@@ -95,8 +107,24 @@ export function formatBySummary(storeName: string, items: OrderItem[], userName?
       notesStr = ` (${notesList.join(', ')})`;
     }
 
-    text += `${idx}. ${item.itemName}(${item.size}) ×${totalQty}\n`;
-    text += `   ${item.sweet}/${item.ice}${toppingsStr}${notesStr}\n`;
+    const menuItem = menu?.categories
+      .flatMap(c => c.items)
+      .find(mi => mi.id === item.menuItemId);
+    const hasMultipleSizes = menuItem ? Object.keys(menuItem.prices).length > 1 : true;
+    const sizeStr = hasMultipleSizes ? `(${item.size})` : '';
+
+    text += `${idx}. ${item.itemName}${sizeStr} ×${totalQty}\n`;
+    
+    const details: string[] = [];
+    if (item.sweet !== '固定') details.push(item.sweet);
+    if (item.ice !== '固定') details.push(item.ice);
+    const sweetIceStr = details.join('/');
+    
+    const toppingsAndNotes = `${toppingsStr}${notesStr}`;
+    if (sweetIceStr || toppingsAndNotes) {
+      const separator = (sweetIceStr && toppingsAndNotes) ? ' ' : '';
+      text += `   ${sweetIceStr}${separator}${toppingsAndNotes}\n`;
+    }
   });
 
   return text;

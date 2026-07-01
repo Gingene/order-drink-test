@@ -1,8 +1,9 @@
 import { useState } from "react";
-import type { OrderItem } from "../types";
+import type { OrderItem, StoreMenu } from "../types";
 
 interface Props {
   items: OrderItem[];
+  menu?: StoreMenu;
   onEdit: (item: OrderItem) => void;
   onRemove: (id: string) => void;
   onRemovePersonItems?: (personName: string) => void;
@@ -10,6 +11,7 @@ interface Props {
 
 export default function OrderList({
   items,
+  menu,
   onEdit,
   onRemove,
   onRemovePersonItems,
@@ -81,40 +83,52 @@ export default function OrderList({
                 ))}
             </div>
             <div className="space-y-2">
-              {orders.map((order) => (
-                <div
-                  key={order.id}
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => onEdit(order)}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter" || event.key === " ") {
-                      event.preventDefault();
-                      onEdit(order);
-                    }
-                  }}
-                  className="flex items-start gap-3 p-3 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm 
-                             rounded-xl border border-gray-100 dark:border-gray-700 group animate-scale-in
-                             cursor-pointer hover:border-milk-300 dark:hover:border-milk-700
-                             focus:outline-none focus:ring-2 focus:ring-milk-400/40"
-                >
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium text-gray-800 dark:text-gray-100">
-                        {order.itemName}
-                      </span>
-                      <span className="text-xs px-1.5 py-0.5 bg-milk-100 dark:bg-milk-900/30 text-milk-700 dark:text-milk-300 rounded-md">
-                        {order.size}
-                      </span>
+              {orders.map((order) => {
+                const menuItem = menu?.categories
+                  .flatMap((c) => c.items)
+                  .find((mi) => mi.id === order.menuItemId);
+                const hasMultipleSizes = menuItem ? Object.keys(menuItem.prices).length > 1 : true;
+                return (
+                  <div
+                    key={order.id}
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => onEdit(order)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        onEdit(order);
+                      }
+                    }}
+                    className="flex items-start gap-3 p-3 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm 
+                               rounded-xl border border-gray-100 dark:border-gray-700 group animate-scale-in
+                               cursor-pointer hover:border-milk-300 dark:hover:border-milk-700
+                               focus:outline-none focus:ring-2 focus:ring-milk-400/40"
+                  >
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <span className="font-medium text-gray-800 dark:text-gray-100">
+                          {order.itemName}
+                        </span>
+                        {hasMultipleSizes && (
+                          <span className="text-xs px-1.5 py-0.5 bg-milk-100 dark:bg-milk-900/30 text-milk-700 dark:text-milk-300 rounded-md">
+                            {order.size}
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                        {[
+                          order.sweet !== "固定" && order.sweet,
+                          order.ice !== "固定" && order.ice,
+                          order.toppings.length > 0 &&
+                            `+${order.toppings.map((t) => t.name).join("+")}`,
+                          order.quantity > 1 && `×${order.quantity}`,
+                          order.note,
+                        ]
+                          .filter(Boolean)
+                          .join(" · ")}
+                      </p>
                     </div>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                      {order.sweet} · {order.ice}
-                      {order.toppings.length > 0 &&
-                        ` · +${order.toppings.map((t) => t.name).join("+")}`}
-                      {order.quantity > 1 && ` · ×${order.quantity}`}
-                      {order.note && ` · ${order.note}`}
-                    </p>
-                  </div>
                   <div className="flex items-center gap-2 shrink-0">
                     <span className="font-semibold text-milk-600 dark:text-milk-400">
                       ${order.subtotal}
@@ -133,7 +147,8 @@ export default function OrderList({
                     </button>
                   </div>
                 </div>
-              ))}
+              );
+            })}
             </div>
             {/* Per-person subtotal */}
             <div className="mt-2 px-3 flex justify-end">

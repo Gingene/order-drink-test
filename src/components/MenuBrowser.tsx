@@ -4,11 +4,14 @@ import type {
   SearchableItem,
   OrderTopping,
   OrderItem,
+  GroupOrder,
 } from "../types";
 import { useSearch } from "../hooks/useSearch";
+import { usePopularItems } from "../hooks/usePopularItems";
 import SearchBar from "./SearchBar";
 import CategoryTabs from "./CategoryTabs";
 import MenuItem from "./MenuItem";
+import PopularDrinks from "./PopularDrinks";
 import OrderForm from "./OrderForm";
 import OrderList from "./OrderList";
 import OrderSummary from "./OrderSummary";
@@ -66,6 +69,7 @@ interface Props {
   onCloseGroup: () => void;
   onStartGroup: () => void;
   userName: string;
+  history: GroupOrder[];
 }
 
 export default function MenuBrowser({
@@ -79,6 +83,7 @@ export default function MenuBrowser({
   onCloseGroup,
   onStartGroup,
   userName,
+  history,
 }: Props) {
   const {
     query,
@@ -97,6 +102,12 @@ export default function MenuBrowser({
   const [showSummary, setShowSummary] = useState(false);
   const [showOrders, setShowOrders] = useState(false);
   const [lastPersonName, setLastPersonName] = useState("");
+
+  const popularItems = usePopularItems(menu, history);
+  const hasFilter =
+    query.trim() !== "" ||
+    activeCategory !== null ||
+    selectedTag !== null;
 
   const handleAddOrder = (order: {
     personName: string;
@@ -206,6 +217,9 @@ export default function MenuBrowser({
 
       {/* Menu Items */}
       <div className="max-w-lg mx-auto px-4 py-4">
+        {popularItems.length > 0 && !hasFilter && (
+          <PopularDrinks items={popularItems} onSelect={setSelectedItem} />
+        )}
         <div className="space-y-2.5">
           {results.length === 0 ? (
             <div className="text-center py-12 text-gray-400 dark:text-gray-500 animate-fade-in">
@@ -293,6 +307,7 @@ export default function MenuBrowser({
             </div>
             <OrderList
               items={activeGroup?.items ?? []}
+              menu={menu}
               onEdit={handleEditOrder}
               onRemove={onRemoveItem}
               onRemovePersonItems={onRemovePersonItems}
@@ -328,6 +343,7 @@ export default function MenuBrowser({
         <OrderSummary
           storeName={menu.storeName}
           items={activeGroup.items}
+          menu={menu}
           totalAmount={activeGroup.totalAmount}
           totalCups={activeGroup.totalCups}
           userName={userName}
