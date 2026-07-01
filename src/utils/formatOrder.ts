@@ -102,7 +102,7 @@ export function formatBySummary(storeName: string, items: OrderItem[], userName?
     if (notes.size > 0) {
       const notesList: string[] = [];
       notes.forEach((qty, note) => {
-        notesList.push(`${note} ×${qty}`);
+        notesList.push(qty > 1 ? `${note} ×${qty}` : note);
       });
       notesStr = ` (${notesList.join(', ')})`;
     }
