@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import type { OrderItem } from '../types';
+import type { OrderItem, StoreMenu } from '../types';
 import { formatByPerson, formatBySummary, copyToClipboard } from '../utils/formatOrder';
 
 interface Props {
   storeName: string;
   items: OrderItem[];
+  menu?: StoreMenu;
   totalAmount: number;
   totalCups: number;
   userName: string;
@@ -12,14 +13,14 @@ interface Props {
   onCloseGroup: () => void;
 }
 
-export default function OrderSummary({ storeName, items, totalAmount, totalCups, userName, onClose, onCloseGroup }: Props) {
+export default function OrderSummary({ storeName, items, menu, totalAmount, totalCups, userName, onClose, onCloseGroup }: Props) {
   const [copied, setCopied] = useState(false);
   const [format, setFormat] = useState<'person' | 'summary'>('summary');
   const [showConfirmClose, setShowConfirmClose] = useState(false);
 
   const text = format === 'person'
-    ? formatByPerson(storeName, items)
-    : formatBySummary(storeName, items, userName);
+    ? formatByPerson(storeName, items, menu)
+    : formatBySummary(storeName, items, userName, menu);
 
   const handleCopy = async () => {
     const ok = await copyToClipboard(text);

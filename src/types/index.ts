@@ -13,6 +13,7 @@ export interface MenuItem {
   sweetOptions?: string[] | null;  // null = use store default
   iceOptions?: string[] | null;    // null = use store default
   toppings?: Topping[];
+  toppingGroup?: string;           // 採用的配料群組名稱
   description?: string;
   hot?: boolean;       // 是否可做熱飲
   available?: boolean; // 是否可供應
@@ -21,6 +22,7 @@ export interface MenuItem {
 export interface MenuCategory {
   name: string;
   items: MenuItem[];
+  toppingGroup?: string;           // 類別預設配料群組名稱
 }
 
 export interface StoreMenu {
@@ -29,6 +31,7 @@ export interface StoreMenu {
   defaultSweetOptions: string[];
   defaultIceOptions: string[];
   defaultToppings?: Topping[];
+  toppingGroups?: Record<string, Topping[]>; // 配料群組定義
   categories: MenuCategory[];
 }
 

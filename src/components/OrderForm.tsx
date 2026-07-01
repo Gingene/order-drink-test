@@ -37,7 +37,15 @@ export default function OrderForm({
   const sizes = Object.entries(item.prices);
   const sweetOptions = item.sweetOptions ?? menu.defaultSweetOptions;
   const iceOptions = item.iceOptions ?? menu.defaultIceOptions;
-  const toppings = item.toppings ?? menu.defaultToppings ?? [];
+  const category = menu.categories.find((c) => c.name === item.categoryName);
+  const resolvedToppingGroup = item.toppingGroup ?? category?.toppingGroup;
+  const toppings =
+    item.toppings ??
+    (resolvedToppingGroup && menu.toppingGroups
+      ? menu.toppingGroups[resolvedToppingGroup]
+      : null) ??
+    menu.defaultToppings ??
+    [];
   const isEditing = initialOrder !== null;
   const defaultPersonName =
     initialOrder?.personName ?? (lastPersonName || "客戶1");
