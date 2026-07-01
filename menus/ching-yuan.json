@@ -1,6 +1,6 @@
 {
   "storeId": "ching-yuan",
-  "storeName": "品源 (原清原芋圓 嘉義大埔美店)",
+  "storeName": "品源 (嘉義大埔美店)",
   "defaultSweetOptions": ["正常", "少糖", "半糖", "微糖", "一分糖", "無糖"],
   "defaultIceOptions": ["正常冰", "少冰", "微冰", "去冰", "完全去冰", "常溫", "熱飲"],
   "defaultToppings": [
@@ -22,6 +22,29 @@
     { "name": "牛奶", "price": 20 },
     { "name": "冰淇淋", "price": 20 }
   ],
+  "toppingGroups": {
+    "iceToppings": [
+      { "name": "硬花生", "price": 5 },
+      { "name": "珍珠", "price": 10 },
+      { "name": "椰果", "price": 10 },
+      { "name": "仙草凍", "price": 10 },
+      { "name": "西米露", "price": 10 },
+      { "name": "蜂蜜凍", "price": 10 },
+      { "name": "煉乳", "price": 10 },
+      { "name": "紅豆", "price": 15 },
+      { "name": "綠豆", "price": 15 },
+      { "name": "大豆", "price": 15 },
+      { "name": "黃金粉角", "price": 15 },
+      { "name": "蘆薈", "price": 15 },
+      { "name": "oreo", "price": 15 },
+      { "name": "軟花生", "price": 15 },
+      { "name": "布丁", "price": 15 },
+      { "name": "小芋圓", "price": 20 },
+      { "name": "地瓜圓", "price": 20 },
+      { "name": "芋泥", "price": 20 },
+      { "name": "湯圓", "price": 20 }
+    ]
+  },
   "categories": [
     {
       "name": "小薇的兒時玩伴",
@@ -169,6 +192,56 @@
         { "id": "cy-148", "name": "黑糖薑母茶", "prices": { "L": 50 }, "tags": ["黑糖", "薑母"], "sweetOptions": ["固定"], "hot": true, "iceOptions": ["熱飲"] },
         { "id": "cy-149", "name": "黑糖薑母奶茶", "prices": { "L": 60 }, "tags": ["黑糖", "薑母", "奶茶"], "sweetOptions": ["固定"], "hot": true, "iceOptions": ["熱飲"] },
         { "id": "cy-150", "name": "黑糖薑母鮮奶", "prices": { "L": 65 }, "tags": ["黑糖", "薑母", "鮮奶"], "sweetOptions": ["固定"], "hot": true, "iceOptions": ["熱飲"] }
+      ]
+    },
+    {
+      "name": "嫩仙草",
+      "toppingGroup": "iceToppings",
+      "items": [
+        { "id": "cy-201", "name": "奶油嫩仙草", "prices": { "L": 25 }, "tags": ["嫩仙草"], "description": "附奶油球", "sweetOptions": ["固定"], "iceOptions": ["固定"] },
+        { "id": "cy-202", "name": "雙芋冰嫩仙草凍", "prices": { "L": 65 }, "tags": ["推薦", "芋頭", "紅豆", "芋圓", "嫩仙草"], "description": "附奶油球 (配料：芋頭+紅豆+芋圓)", "sweetOptions": ["固定"], "iceOptions": ["固定"] }
+      ]
+    },
+    {
+      "name": "暖湯",
+      "toppingGroup": "iceToppings",
+      "items": [
+        { "id": "cy-211", "name": "燒仙草", "prices": { "L": 50 }, "tags": ["燒仙草", "暖湯"], "description": "附贈硬花生 (配料：綠豆、大豆、珍珠、芋圓)", "sweetOptions": ["固定"], "hot": true, "iceOptions": ["熱飲"] },
+        { "id": "cy-212", "name": "紅豆湯", "prices": { "L": 55 }, "tags": ["紅豆湯", "暖湯"], "description": "(配料：紅豆、珍珠、芋頭、芋圓)", "sweetOptions": ["固定"], "hot": true, "iceOptions": ["熱飲"] },
+        { "id": "cy-213", "name": "薑母湯", "prices": { "L": 55 }, "tags": ["薑母湯", "暖湯"], "description": "(配料：大豆、珍珠、芋頭、芋圓)", "sweetOptions": ["固定"], "hot": true, "iceOptions": ["熱飲"] },
+        { "id": "cy-214", "name": "桂圓紅棗湯", "prices": { "L": 55 }, "tags": ["桂圓", "紅棗", "暖湯"], "description": "(配料：紅豆、大豆、綠豆、芋圓)", "sweetOptions": ["固定"], "hot": true, "iceOptions": ["熱飲"] },
+        { "id": "cy-215", "name": "紅白湯圓", "prices": { "L": 55 }, "tags": ["湯圓", "暖湯"], "description": "(配料：紅豆、珍珠、花生、湯圓)", "sweetOptions": ["固定"], "hot": true, "iceOptions": ["熱飲"] },
+        { "id": "cy-216", "name": "紫米紅豆湯", "prices": { "L": 55 }, "tags": ["紫米", "紅豆", "暖湯"], "description": "(配料：紅豆、珍珠、紫米、湯圓)", "sweetOptions": ["固定"], "hot": true, "iceOptions": ["熱飲"] }
+      ]
+    },
+    {
+      "name": "仙草冰",
+      "toppingGroup": "iceToppings",
+      "items": [
+        { "id": "cy-221", "name": "招牌1號", "prices": { "L": 60 }, "tags": ["推薦", "仙草冰"], "description": "夏天 3月-11月販售 (配料：綠豆、珍珠、仙草凍、芋頭、芋圓)", "sweetOptions": ["固定"], "iceOptions": ["固定"] },
+        { "id": "cy-222", "name": "招牌2號", "prices": { "L": 60 }, "tags": ["推薦", "仙草冰"], "description": "夏天 3月-11月販售 (配料：大豆、珍珠、仙草凍、芋頭、芋圓)", "sweetOptions": ["固定"], "iceOptions": ["固定"] },
+        { "id": "cy-223", "name": "招牌3號", "prices": { "L": 60 }, "tags": ["推薦", "仙草冰"], "description": "夏天 3月-11月販售 (配料：紅豆、珍珠、仙草凍、芋頭、芋圓)", "sweetOptions": ["固定"], "iceOptions": ["固定"] },
+        { "id": "cy-224", "name": "招牌自選五樣料", "prices": { "L": 65 }, "tags": ["自選", "仙草冰"], "description": "夏天 3月-11月販售 (可自選五樣配料)", "sweetOptions": ["固定"], "iceOptions": ["固定"] }
+      ]
+    },
+    {
+      "name": "滿滿芋頭冰",
+      "toppingGroup": "iceToppings",
+      "items": [
+        { "id": "cy-231", "name": "芋見幸福", "prices": { "L": 60 }, "tags": ["推薦", "芋頭冰"], "description": "(配料：紅豆、珍珠、芋頭、仙草凍、芋圓)", "sweetOptions": ["固定"], "iceOptions": ["固定"] },
+        { "id": "cy-232", "name": "隨心所芋 (自選五樣料)", "prices": { "L": 65 }, "tags": ["推薦", "自選", "芋頭冰"], "description": "可自選五樣配料", "sweetOptions": ["固定"], "iceOptions": ["固定"] }
+      ]
+    },
+    {
+      "name": "剉冰",
+      "toppingGroup": "iceToppings",
+      "items": [
+        { "id": "cy-241", "name": "火烤布丁牛奶冰", "prices": { "L": 50 }, "tags": ["布丁", "牛奶", "剉冰"], "sweetOptions": ["固定"], "iceOptions": ["固定"] },
+        { "id": "cy-242", "name": "經典剉冰", "prices": { "L": 55 }, "tags": ["剉冰"], "description": "(配料：紅豆、大豆、珍珠、西米露、粉角)", "sweetOptions": ["固定"], "iceOptions": ["固定"] },
+        { "id": "cy-243", "name": "剉冰1號", "prices": { "L": 55 }, "tags": ["剉冰"], "description": "(配料：綠豆、珍珠、仙草凍、芋頭、芋圓)", "sweetOptions": ["固定"], "iceOptions": ["固定"] },
+        { "id": "cy-244", "name": "剉冰2號", "prices": { "L": 55 }, "tags": ["剉冰"], "description": "(配料：大豆、珍珠、仙草凍、芋頭、芋圓)", "sweetOptions": ["固定"], "iceOptions": ["固定"] },
+        { "id": "cy-245", "name": "剉冰3號", "prices": { "L": 55 }, "tags": ["剉冰"], "description": "(配料：紅豆、珍珠、仙草凍、芋頭、芋圓)", "sweetOptions": ["固定"], "iceOptions": ["固定"] },
+        { "id": "cy-246", "name": "自選五樣料", "prices": { "L": 60 }, "tags": ["自選", "剉冰"], "description": "可自選五樣配料", "sweetOptions": ["固定"], "iceOptions": ["固定"] }
       ]
     }
   ]
