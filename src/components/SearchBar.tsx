@@ -22,10 +22,10 @@ export default function SearchBar({
   const [showSuggestions, setShowSuggestions] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Filter tags containing the query
+  // Filter tags containing the query (or show all except selectedTag if empty)
   const matchingTags = query.trim()
     ? tags.filter(tag => tag.toLowerCase().includes(query.toLowerCase()))
-    : [];
+    : tags.filter(tag => tag !== selectedTag);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -69,7 +69,7 @@ export default function SearchBar({
             setShowSuggestions(true);
           }}
           onFocus={() => setShowSuggestions(true)}
-          placeholder={selectedTag ? '' : '搜尋飲料...（輸入「茶」可篩選標籤）'}
+          placeholder={selectedTag ? '' : '搜尋飲料...（點擊可選擇標籤）'}
           className="flex-1 bg-transparent border-none outline-none text-xs sm:text-sm text-gray-800 dark:text-gray-100 
                      placeholder:text-gray-400 p-0 focus:ring-0 focus:outline-none focus:border-none focus:bg-transparent"
           id="search-input"
